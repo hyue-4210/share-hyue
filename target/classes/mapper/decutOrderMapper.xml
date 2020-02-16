@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerlong.sharera.dao.decutOrderMapper">
+	<insert id="save" parameterType="com.powerlong.sharera.vo.decutOrderVo">
+		INSERT INTO `dedut_point_order` (`id`, `mobile`, `projectID`, `deductPoint`, `orderNum`, `deductMoney`,`serviceType`,`deviceID`)
+		VALUES (#{id},#{mobile},#{projectID},#{deductPoint},#{orderNum},#{deductMoney},#{serviceType},#{deviceID});
+	</insert>
+	<select id="getDetail" resultType="com.powerlong.sharera.vo.decutOrderVo">
+		select * from dedut_point_order where orderNum = #{orderNum} limit 1
+	</select>
+    <select id="getThirdUrl" resultType="com.powerlong.sharera.vo.goThirdUrlVo">
+		select * from goThirdUrl where 1=1
+		<if test="type !=null">
+			and type =#{type}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(appId)">
+			and appId=#{appId}
+		</if>
+		<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(device_id)">
+			and device_id=#{device_id}
+		</if>
+	</select>
+</mapper>

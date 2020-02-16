@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerlong.sharera.dao.useMessageMapper">
+	<insert id="save" parameterType="com.powerlong.sharera.vo.useMessageVo">
+		INSERT INTO `sharera`.`usemessage`(`project_id`, `use_title`, `use_content`) VALUES
+		 (#{projectId},#{useTitle},#{useContent})
+	</insert>
+
+	<update id="update" parameterType="com.powerlong.sharera.vo.useMessageVo">
+		update usemessage set use_title = #{useTitle},use_content = #{useContent} where project_id = #{projectId}
+	</update>
+	<select id="getuseMessage" resultType="com.powerlong.sharera.vo.useMessageVo"
+			parameterType="com.powerlong.sharera.vo.useMessageVo">
+		select  `project_id` projectId, `use_title` useTitle, `use_content` useContent from usemessage where project_id = #{projectId}
+	</select>
+</mapper>

@@ -1,0 +1,43 @@
+server:
+  port: 9000
+
+spring:
+  datasource:
+    url: jdbc:mysql://10.150.100.9:3306/bl_sharera?useUnicode=true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: T6kozoh2wl824#!
+    driver-class-name: com.mysql.jdbc.Driver
+logging:
+  file: yumlogs/sharera.log
+  level:
+    org.mybatis.spring: debug
+    org.spring.springboot.dao: DEBUG
+    com.powerlong.sharera.dao: debug
+    com.powerlong.sharera.controller: debug
+
+yzmsg:
+  url: http://sj.soyunion.com/Yzyy/paperOut  #云纸正式
+  basicurl: https://apipre.powerlong.com
+  secret_key: 9fe422a05d99dac65d844630104933be
+  pandaRuleUrl: https://panda.100-bike.com/business/synIntegralExchangeRule.do   #熊猫溜娃积分规则推送地址-正式
+  lmbRuleUrl: https://o2o.lemobar.com/api/v1/third/pointRule
+  lmbgetproid: https://o2o.lemobar.com/api/v1/powerlong/projectID
+  lmbtoken: t39M2KP5fb9a0hQ6  #正式
+  lmburl1: lemobar.com    #正式环境
+  lmburl2: lemoba.51xgame.com   #正式环境
+  ldappId: 61287647188
+  ldSecretKey: bf4db4c098834badb87b2030b614b0c3
+  ldurl: http://activity-api.imlaidian.com/ka/facade/bl/memberPointRuleSync
+
+  mapmsg:
+    'SECRET_ERROR': "秘钥错误"
+    'OUT_SUCCESS': "出纸成功"
+    'OUT_ERROR_FIVE': "取纸已达今日上限"
+    'OUT_ERROR_DEVICE': "设备故障"
+    'OUT_ERROR_NO_OPEN': "设备未开启"
+    'PAPER_EMPTY': "设备暂时无纸"
+
+ThirdParty:
+  bl:
+    SECRET_ID: m3xuzKiHTn84jgj2VXYZtLntLxRtqHfM7TBZ
+    SECRET_KEY: v96YQPbpkSFPonRbgqNis1ntjx0BleME6ubX

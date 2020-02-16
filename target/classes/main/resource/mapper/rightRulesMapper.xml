@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerlong.sharera.dao.rightRulesMapper">
+    <insert id="update" parameterType="com.powerlong.sharera.vo.rightRulesVo">
+        UPDATE `right_rules` SET `updateTime`=now(),
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(updatePeople)">
+            `updatePeople`=#{updatePeople},
+        </if>
+        <if test="effectiveStartTime != null">
+            `effectiveStartTime`=#{effectiveStartTime},
+        </if>
+        <if test="effectiveEndTime != null">
+            `effectiveEndTime`=#{effectiveEndTime},
+        </if>
+        <if test="topPoint != null">
+            `topPoint`=#{topPoint},
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(memberType)">
+            `memberType`=#{memberType},
+        </if>
+        <if test="postPoint != null">
+            `postPoint`=#{postPoint},
+        </if>
+        <if test="getMoney != null">
+            `getMoney`=#{getMoney},
+        </if>
+        <if test="postMoney != null">
+            `postMoney`=#{postMoney},
+        </if>
+        <if test="getPoint != null">
+            `getPoint`=#{getPoint},
+        </if>
+        <if test="submitType != null">
+            `submitType`=#{submitType},
+        </if>
+        <if test="status != null">
+            `status`=#{status},
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(remarks)">
+            `remarks`=#{remarks},
+        </if>
+        <if test="type != null">
+            `type`=#{type},
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(backReason)">
+            `backReason`=#{backReason},
+        </if>
+        <if test="isCommon != null">
+            `isCommon`=#{isCommon},
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(nextAutor)">
+            `nextAutor`=#{nextAutor},
+        </if>
+        <if test="isCommon != null">
+            `isAddPoint`=#{isAddPoint},
+        </if>
+        id=#{id}
+        WHERE (`id`=#{id})
+    </insert>
+    <insert id="save" parameterType="com.powerlong.sharera.vo.rightRulesVo">
+		INSERT INTO `right_rules`
+		(`id`,`ids`, `projectId`, `createTime`, `createPeople`, `updateTime`, `updatePeople`, `effectiveStartTime`, `effectiveEndTime`, `topPoint`, `memberType`, `postPoint`, `getMoney`,
+		 `postMoney`, `getPoint`, `submitType`, `status`, `remarks`, `type`, `backReason`, `isCommon`,`nextAutor`,`isAddPoint`,`memberTypeName`) VALUES
+		(#{id},#{ids}, #{projectId}, now(),#{createPeople},now(),#{updatePeople},#{effectiveStartTime},#{effectiveEndTime},#{topPoint},#{memberType},#{postPoint},#{getMoney},
+		#{postMoney},#{getPoint},#{submitType},#{status},#{remarks},#{type},#{backReason},#{isCommon},#{nextAutor},#{isAddPoint},#{memberTypeName})
+	</insert>
+    <update id="putAway">
+		UPDATE right_rules SET status = 4 where status = 2 and <![CDATA[ effectiveStartTime < now()
+
+        ]]>
+    </update>
+    <update id="soldOut">
+		UPDATE right_rules SET status = 5  where status = 4 and <![CDATA[
+		date_add(effectiveEndTime, interval 1 day) < now()
+        ]]>
+    </update>
+    <delete id="del">
+		delete from right_rules where id=#{id}
+	</delete>
+    <delete id="delAutor">
+        update right_rules set remarks = null where id=#{id}
+    </delete>
+    <delete id="delNextAutor">
+        update right_rules set nextAutor = null where id=#{id}
+    </delete>
+
+    <select id="getList" resultType="com.powerlong.sharera.vo.rightRulesVo"
+            parameterType="com.powerlong.sharera.vo.rightRulesVo">
+        SELECT distinct
+        id,projectId,effectiveStartTime,effectiveEndTime,status,remarks,nextAutor,isCommon,topPoint,type,createPeople,backReason,updateTime ,createTime
+        from right_rules
+        where projectId=#{projectId} and type=#{type}
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(id)">
+            and id = #{id}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(ids)">
+            and ids = #{ids}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(status)">
+            and status in
+            <foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="isCommon != null">
+            and isCommon=#{isCommon}
+        </if>
+
+        <if test="effectiveStartTime != null">
+            <![CDATA[
+            and (( DATE_FORMAT(effectiveStartTime,'%Y%m%d') >= DATE_FORMAT(#{effectiveStartTime},'%Y%m%d')
+            and  DATE_FORMAT(effectiveStartTime,'%Y%m%d') <= DATE_FORMAT(#{effectiveEndTime},'%Y%m%d') )
+            ]]>
+        </if>
+        <if test="effectiveStartTime != null">
+            <![CDATA[
+			or  ( DATE_FORMAT(effectiveStartTime,'%Y%m%d') <= DATE_FORMAT(#{effectiveStartTime},'%Y%m%d')
+			and  DATE_FORMAT(effectiveEndTime,'%Y%m%d') >= DATE_FORMAT(#{effectiveEndTime},'%Y%m%d') )
+			]]>
+        </if>
+
+        <if test="effectiveStartTime != null">
+            <![CDATA[
+			or  ( DATE_FORMAT(effectiveEndTime,'%Y%m%d') >= DATE_FORMAT(#{effectiveStartTime},'%Y%m%d')
+			and  DATE_FORMAT(effectiveEndTime,'%Y%m%d')  <= DATE_FORMAT(#{effectiveEndTime},'%Y%m%d') )
+			]]>)
+        </if>
+        order by createTime desc
+    </select>
+
+
+    <select id="getDetai" resultType="com.powerlong.sharera.vo.rightRulesVo">
+        select * from right_rules where 1=1
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(id)">
+            and id = #{id}
+        </if>
+
+    </select>
+
+    <select id="getTodayRules" resultType="com.powerlong.sharera.vo.rightRulesVo">
+        SELECT * from right_rules where <![CDATA[TO_DAYS(effectiveStartTime)<=TO_DAYS(NOW())]]> and TO_DAYS(effectiveEndTime)>=TO_DAYS(NOW()) and status = 4
+    </select>
+    <select id="getTodayRulesByType" resultType="com.powerlong.sharera.vo.rightRulesVo">
+        SELECT * from right_rules where <![CDATA[TO_DAYS(effectiveStartTime)<=TO_DAYS(NOW())]]> and
+        TO_DAYS(effectiveEndTime)>=TO_DAYS(NOW()) and status in (4)
+        <if test="type != null">
+            and `type`=#{type}
+        </if>
+    </select>
+
+    <select id="getListCommon" resultType="com.powerlong.sharera.vo.rightRulesVo"
+            parameterType="com.powerlong.sharera.vo.rightRulesVo">
+        select * from right_rules where projectId=#{projectId} and isCommon=#{isCommon} and type=#{type}
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(memberType)">
+            and memberType = #{memberType}
+        </if>
+    </select>
+    <select id="getlocalprojectrules" resultType="com.powerlong.sharera.vo.rightRulesVo">
+        select * from right_rules where projectId = #{projectId} and `type` = #{type} and `status` in (2,4)
+        and <![CDATA[TO_DAYS(effectiveStartTime)<=TO_DAYS(NOW())]]> and TO_DAYS(effectiveEndTime)>=TO_DAYS(NOW())
+    </select>
+</mapper>

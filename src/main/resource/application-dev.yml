@@ -1,0 +1,73 @@
+server:
+  port: 9000
+
+spring:
+  datasource:
+    url: jdbc:mysql://212.64.1.36:3306/sharera?useUnicode=true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: 64a04c2cd93d7bc2369cdfbd5e829824
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    database: 0
+    host: 139.199.127.237
+    port: 6379
+    password: wingpassword
+    timeout: 3000
+    pool:
+      max-active: 10
+      max-wait: -1
+      max-idle: 5
+
+logging:
+  file: yumlogs/server.log
+  level:
+    org.mybatis.spring: debug
+    com.powerlong.sharera.dao: debug
+    com.powerlong.sharera.service.impl: debug
+    com.powerlong.sharera.controller: debug
+
+yzmsg:
+  #  url: http://sj.soyunion.com/Yzyy/paperOut
+  #  url: http://yz.core.zhishangsoft.com/Yzyy/paperOut  #测试11
+  url: http://sj.soyunion.com/Yzyy/paperOut  #云纸正式
+
+#  basicurl: https://baolong.weplugs.com/api
+  basicurl: http://127.0.0.1:8080
+
+  #  secret_key: YZYYQPJN2D9JSF5
+  secret_key: 9fe422a05d99dac65d844630104933be
+
+  #  pandaRuleUrl: https://pandatest1.100-bike.com/business/synIntegralExchangeRule.do   #熊猫溜娃积分规则推送地址-测试
+  pandaRuleUrl: https://panda.100-bike.com/business/synIntegralExchangeRule.do   #熊猫溜娃积分规则推送地址-正式
+
+  lmbRuleUrl: http://o2o.test.lemobar.cn/api/v1/third/pointRule
+  lmbgetproid: http://o2o.test.lemobar.cn/api/v1/powerlong/projectID
+  #  lmbRuleUrl: https://o2o.lemobar.com/api/v1/third/pointRule
+  #  lmbgetproid: https://o2o.lemobar.com/api/v1/powerlong/projectID
+  lmbtoken: k6M2Yl3dTkwBO9t5  #测试
+  #  lmbtoken: t39M2KP5fb9a0hQ6  #正式
+
+  #  lmburl1: lemobar.com    #正式环境
+  #  lmburl2: lemoba.51xgame.com   #正式环境
+  lmburl1: lemobar.cn   #测试环境
+  lmburl2: lemobar.cn   #测试环境
+
+  #  ldappId: :61287647188
+  #  ldSecretKey: 3a2a5b794c7b4ccbbfe1bae413e84800
+  ldappId: 61287647188
+  ldSecretKey: bf4db4c098834badb87b2030b614b0c3
+  #  ldurl: http://crm-test.imlaidian.com/ka/facade/bl/memberPointRuleSync
+  ldurl: http://activity-api.imlaidian.com/ka/facade/bl/memberPointRuleSync
+
+  mapmsg:
+    'SECRET_ERROR': "秘钥错误"
+    'OUT_SUCCESS': "出纸成功"
+    'OUT_ERROR_FIVE': "取纸已达今日上限"
+    'OUT_ERROR_DEVICE': "设备故障"
+    'OUT_ERROR_NO_OPEN': "设备未开启"
+    'PAPER_EMPTY': "设备暂时无纸"
+
+ThirdParty:
+  bl:
+    SECRET_ID: AKIDz8krbsJ5yKBZQpn74WFkmLPx3EXAMPL
+    SECRET_KEY: Gu5t9xGARNpq86cd98joQYCN3EXAMPLG
